@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2014 by prashanth-pattabi (http://jsbin.com/cabewa/43/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<html>
+<head>
+<meta name="description" content="cloning a working piece of the code" />
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+  
+ <link rel="stylesheet" type="text/css" href="http://iamceege.github.io/tooltipster/css/tooltipster.css" />
+  
+ <script type="text/javascript" src=" http://iamceege.github.io/tooltipster/js/jquery.tooltipster.js"></script> 
+  
+<style id="jsbin-css">
+.poi_marker{
+  display: block;
+width: 20px;
+  height: 20px;
+border-radius: 20px;
+  background-color: yellow;
+  border:2px solid orange;  
+}
+
+
+
+.tooltipster-noir-preview {
+border-radius: 0px;
+border: 3px solid #2c2c2c;
+background: #fff;
+color: #2c2c2c;
+font-family: 'Georgia', serif;
+font-size: 14px;
+line-height: 16px;
+padding: 8px 10px;
+font-weight: 400;
+}
+
+.tooltip_image_wrapper{
+  width:150px; 
+  height:150px; 
+  overflow:hidden; 
+  float:left; 
+  display:inline-block
+}
+
+.tooltip_text_wrapper{
+  max-width:190px; 
+  padding:0 5px 0 5px; 
+  overflow:hidden; 
+  float:left; 
+  display:inline-block
+}
+
+.cta{
+  padding:8px; 
+  background-color: black; 
+  color:#fff; 
+  float:right; 
+  margin-right:10px; 
+  margin-top: 10px
+}
+</style>
+</head>
+<body style="text-align:center">
+<div id='image_holder' style="">  
+  <img src='http://www.detalje.com/wp-content/uploads/2011/03/vaser.jpg' style='width:600px; display:block; z-index:1; position:absolute; '>
+  
+<div id="markersOverlay" style="position: absolute; z-index:2;">  
+    
+</div>
+  
+</div>
+  
+  
+  
+  </div>
+<script id="jsbin-javascript">
+
+var pointsOfInterest = '{ "poi" : [' +
+    '{ "x":140 , "y":250, "type":"default", "heading":"Botanica Mini Package", "text":"A collection of small vases that just complement each other. A sheer delight to have them by the window.", "link":"http://www.kahlerdesign.com", "img":"http://trendcorner.dk/images/thumbnails/150x0/FFFFFF/images/kahler.jpg", "youtubevideoid":"" },' +
+'{ "x":380 , "y":230, "type":"default", "heading":"Omaggio Vase Sunshine Yellow Large", "text":"The perfect addition to the mantel in your living room. Available in 5 different colors.", "link":"" , "img":"http://wonmark.com/wp-content/uploads/2012/08/K%C3%A4hlerOmaggio2-150x150.jpg", "youtubevideoid":""  },' +
+'{ "x":265 , "y":280, "type":"youtube", "heading":"", "text":"text short 3", "link":"" , "img":"", "youtubevideoid":"JGHbLuFFNMs"  },'+
+'{ "x":475 , "y":260, "type":"facebook", "heading":"heading 3", "text":"text short 3", "link":"" , "img":"", "fbid":"KahlerDesign"  } ]}';
+
+
+
+var obj = JSON.parse(pointsOfInterest);
+
+
+var poi_counter = obj.poi.length;
+console.log(obj.poi.length);
+/*for (var i = 0; i <= 2; i++){
+  $("#demo").append(obj.poi[i].heading + "<br> " + obj.poi[i].text);
+}
+*/
+
+
+             
+
+
+for (var i = 0; i <= poi_counter-1; i++){
+  
+  //-----------------------------//
+  // ----- Adding the markers ---//
+  //-----------------------------//
+
+  poihtml = "<div id='poi"+i+"'  class='poi_marker'>";  $("#markersOverlay").append(poihtml);
+  
+  
+  //-----------------------------//
+  // - positioning the markers --//
+  //-----------------------------//
+  
+  $('#poi'+i).css({top:obj.poi[i].y, left:obj.poi[i].x, position: 'absolute'});
+  
+  
+  //-----------------------------//
+  // -- creating the content --- //
+  //-----------------------------//
+  
+  if(obj.poi[i].type=="default"){
+    var poicontent = '<div style = "width:350px">'+
+        '<div class="tooltip_image_wrapper"><img src="'+obj.poi[i].img+'" /></div>'+
+        '<div class="tooltip_text_wrapper">'+
+        '<span style="font-weight:bold">'+obj.poi[i].heading+'</span>'+
+        '<br/><br/><span style="font-weight:light;">'+obj.poi[i].text+'</span>'+
+        '<br><a href="'+obj.poi[i].link+'" target="_blank" style="text-decoration:none; font-size: 11px; "><div class="cta">View Product</div></a>'+
+    '</div>'+
+       
+        '</div>';
+    }
+  else if (obj.poi[i].type=="youtube"){
+    poicontent = '<iframe width="350" height="197" src="//www.youtube.com/embed/'+obj.poi[i].youtubevideoid+'"frameborder="0" allowfullscreen></iframe>';
+  }
+  else if (obj.poi[i].type=="facebook"){
+    poicontent = '<iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2F'+obj.poi[i].fbid+'&amp;width&amp;height=290&amp;colorscheme=light&amp;show_faces=true&amp;header=true&amp;stream=false&amp;show_border=true&amp;appId=437795476328716" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:290px;" allowTransparency="true"></iframe>';
+  }
+ 
+  
+  
+  //-----------------------------//
+  // --- setting and content --- //
+  //-----------------------------//
+  
+  
+  $('#poi'+i).tooltipster({
+   animation: 'fade',
+   delay: 200,
+   onlyOne: true,
+   autoClose:true,
+   interactive:true,
+   interactiveTolerance: 500,
+   theme: 'tooltipster-noir-preview',
+   touchDevices: false,
+   content: $(poicontent),   
+   trigger: 'hover',
+   }); 
+ 
+}
+
+
+
+
+
+</script>
+</body>
+</html>
